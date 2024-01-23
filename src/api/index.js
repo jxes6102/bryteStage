@@ -38,6 +38,13 @@ instance.interceptors.response.use(
     // Do something with response data
     // console.log('interceptors.response response',response)
     // console.log('response',response)
+    // console.log('X-Refresh-Token:',response)
+    // console.log('response',response)
+    // console.log('X-Refresh-Token',response.headers.get("x-auth-token"));
+    // console.log('content-type',response.headers["content-type"])
+    // console.log('X-Refresh-Token',response.headers["x-auth-token"])
+    // console.log('X-Refresh-Token',JSON.parse(response.headers["X-Refresh-Token"]))
+    
     return response;
   },
   error => {

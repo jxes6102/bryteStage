@@ -8,7 +8,7 @@
         <div class="line-style w-[100%] text-[#D3D3D3] flex"></div>
         <div class="w-full md:w-[80%] my-2 p-1 md:p-2 rounded-md ">
             <el-form :inline="!isMobile" :model="form" label-width="60px">
-                <el-form-item label="集團">
+                <!-- <el-form-item label="集團">
                     <el-col :span="24">
                         <el-input
                             disabled
@@ -36,10 +36,10 @@
                             <el-option label="Zone two" value="beijing" />
                         </el-select>
                     </el-col>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="關鍵字">
                     <el-col :span="24">
-                        <el-input placeholder="使用者號或信箱" v-model="form.desc" />
+                        <el-input placeholder="請輸入" v-model="form.keyWord" />
                     </el-col>
                 </el-form-item>
                 <el-form-item>
@@ -50,26 +50,48 @@
             </el-form>
         </div>
         <div class="line-style w-[100%] text-[#D3D3D3] flex"></div>
-        <div class="w-full md:w-[80%] h-auto my-1 px-2 py-1 flex flex-wrap justify-center items-center">
-            <el-table :data="tableData" style="width: 100%">
-                <el-table-column prop="name" label="使用者姓名" > 
+        <div class="w-full md:w-[75%] lg:w-[80%] h-auto my-1 px-2 py-1 flex flex-wrap justify-center items-center">
+            <el-table :data="userList" style="width: 100%">
+                <el-table-column prop="account" label="帳號" > 
                     <template #default="scope">
-                        <div @click="editPoint(scope)" class="truncate">{{ scope.row.name }}</div>
+                        <div class="truncate">{{ scope.row.account }}</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="income" label="收入" > 
+                <!-- <el-table-column prop="email" label="電子郵件" > 
                     <template #default="scope">
-                        <div @click="editPoint(scope)" class="truncate">{{ scope.row.income }}</div>
+                        <div class="truncate">{{ scope.row.email }}</div>
+                    </template>
+                </el-table-column> -->
+                <el-table-column prop="gender" label="性別" > 
+                    <template #default="scope">
+                        <div class="truncate">{{ scope.row.gender }}</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="expense" label="支出" > 
+                <el-table-column prop="name" label="姓名" > 
                     <template #default="scope">
-                        <div @click="editPoint(scope)" class="truncate">{{ scope.row.expense }}</div>
+                        <div class="truncate">{{ scope.row.name }}</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="remain" label="剩餘" > 
+                <el-table-column prop="nickName" label="暱稱" > 
                     <template #default="scope">
-                        <div @click="editPoint(scope)" class="truncate">{{ scope.row.remain }}</div>
+                        <div class="truncate">{{ scope.row.nickName }}</div>
+                    </template>
+                </el-table-column>
+                <!-- <el-table-column prop="phone" label="電話" > 
+                    <template #default="scope">
+                        <div class="truncate">{{ scope.row.phone }}</div>
+                    </template>
+                </el-table-column> -->
+                <el-table-column prop="roleId" label="身分" > 
+                    <template #default="scope">
+                        <div class="truncate">{{ transformRole(scope.row.roleId) }}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column width="90" label="操作" > 
+                    <template #default="scope">
+                        <div class="truncate">
+                            <el-button class="mx-1" type="primary" @click="editUser(scope)">編輯</el-button>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -79,63 +101,112 @@
                 small
                 background
                 layout="prev, pager, next"
-                :total="50"
+                :current-page="page"
+                :total="totalCount"
+                :page-sizes="[10]"
+                :disabled="loadStatus"
+                @current-change="changePage"
                 class="mt-4"
             />
         </div>
         <div class="w-full my-3 px-3 text-xl flex flex-wrap justify-start items-center">
-            共 1 筆資料
+            {{ '共' + totalCount + '筆資料' }}
         </div>
 
         <choseGroup @close="cancel" v-if="groupStatus"></choseGroup>
 
         <Teleport to="body">
-            <dialogView @close="cancel" type="small" v-if="pointStatus">
+            <dialogView @close="cancel" v-if="editStatus">
                 <template v-slot:title>
-                    <div class="w-full my-[1px] md:my-1 px-2 py-[1px] md:py-1 text-2xl">發送積分</div>
+                    <div class="w-full my-[1px] md:my-1 px-2 py-[1px] md:py-1 text-2xl">編輯使用者</div>
                     <div class="line-style w-[100%] text-[#D3D3D3] flex"></div>
                 </template>
                 <template v-slot:message>
                     <div class="w-[100%] h-auto flex flex-wrap justify-center items-center overflow-x-hidden overflow-y-auto">
-                        <el-form :inline="false" label-position="top" :model="pointForm" label-width="60px" style="width:100%;padding:10px 5px;">
-                            <el-form-item label="使用者">
+                        <el-form :inline="false" label-position="top" :model="userData" label-width="60px" style="width:100%;padding:10px 5px;">
+                            <el-form-item label="帳號">
                                 <el-col :span="24">
-                                    <el-input placeholder="" v-model="form.user" />
+                                    <el-input :disabled="true" placeholder="" v-model="userData.account" />
                                 </el-col>
                             </el-form-item>
-                            <el-form-item label="數量">
+                            <el-form-item label="生日">
                                 <el-col :span="24">
-                                    <el-input placeholder="" v-model="form.amount" />
+                                    <el-date-picker
+                                        popper-class="custom-date-picker"
+                                        v-model="userData.birthday"
+                                        type="date"
+                                        placeholder="Pick a date"
+                                        :default-value="new Date()"
+                                        style="width: 100%;font-size: 14px;"
+                                    />
+                                    <!-- <el-input placeholder="" v-model="userData.birthday" /> -->
                                 </el-col>
                             </el-form-item>
-                            <el-form-item label="事由">
+                            <el-form-item label="電子郵件">
                                 <el-col :span="24">
-                                    <el-input placeholder="" v-model="form.reason" />
+                                    <el-input placeholder="" v-model="userData.email" />
                                 </el-col>
                             </el-form-item>
+                            <el-form-item label="性別">
+                                <el-col :span="24">
+                                    <el-select
+                                        style="width: 100%;font-size: 14px;"
+                                        v-model="userData.gender" 
+                                        placeholder="">
+                                        <el-option label="男" value="男" />
+                                        <el-option label="女" value="女" />
+                                    </el-select>
+                                </el-col>
+                            </el-form-item>
+                            <!-- <el-form-item label="userdID">
+                                <el-col :span="24">
+                                    <el-input placeholder="" v-model="userData.id" />
+                                </el-col>
+                            </el-form-item> -->
+                            <el-form-item label="lineID">
+                                <el-col :span="24">
+                                    <el-input placeholder="" v-model="userData.lineId" />
+                                </el-col>
+                            </el-form-item>
+                            <el-form-item label="姓名">
+                                <el-col :span="24">
+                                    <el-input placeholder="" v-model="userData.name" />
+                                </el-col>
+                            </el-form-item>
+                            <el-form-item label="暱稱">
+                                <el-col :span="24">
+                                    <el-input placeholder="" v-model="userData.nickName" />
+                                </el-col>
+                            </el-form-item>
+                            <el-form-item label="電話">
+                                <el-col :span="24">
+                                    <el-input placeholder="" v-model="userData.phone" />
+                                </el-col>
+                            </el-form-item>
+                            <el-form-item label="身分">
+                                <el-col :span="24">
+                                    <el-select
+                                        style="width: 100%;font-size: 14px;"
+                                        v-model="userData.roleId" 
+                                        placeholder="">
+                                        <template v-for="(item,index) in roleData" :key="index">
+                                            <el-option :label="item.name" :value="item.id" />
+                                        </template>
+                                    </el-select>
+                                </el-col>
+                            </el-form-item>
+                            
                         </el-form>
                     </div>
                 </template>
                 <template v-slot:control>
                     <div class="line-style w-[100%] text-[#D3D3D3] flex"></div>
-                    <div class="w-full h-auto my-1 px-2 py-1 flex flex-wrap justify-between items-center">
+                    <div class="w-full h-auto my-1 px-2 py-1 flex flex-wrap justify-end items-center">
                         <button
-                            @click="checkPoint"
+                            @click="saveEdit"
                             class="w-auto bg-blue-500 hover:bg-blue-600 text-white font-bold mx-2 py-1 px-2 md:py-2 md:px-3 rounded">
-                            刪除
+                            修改
                         </button>
-                        <div class="w-auto flex flex-wrap justify-end items-center">
-                            <button
-                                @click="checkPoint"
-                                class="w-auto bg-blue-500 hover:bg-blue-600 text-white font-bold mx-2 py-1 px-2 md:py-2 md:px-3 rounded">
-                                確定
-                            </button>
-                            <button
-                                @click="cancel"
-                                class="w-auto bg-blue-500 hover:bg-blue-600 text-white font-bold mx-2 py-1 px-2 md:py-2 md:px-3 rounded">
-                                取消
-                            </button>
-                        </div>
                     </div>
                 </template>
             </dialogView>
@@ -148,7 +219,7 @@
 import { ref,computed } from "vue"
 import { useRouter,useRoute } from "vue-router"
 import { useMobileStore } from '@/stores/index'
-import { getRoleList,getUserList } from '@/api/api'
+import { getRoleList,getUserList,setUserEdit } from '@/api/api'
 import dialogView from "@/components/dialogView.vue"
 import choseGroup from "@/components/choseGroup.vue"
 
@@ -161,6 +232,7 @@ const isMobile = computed(() => {
   return mobileStore.isMobile
 })
 
+const loadStatus = ref(false)
 const groupStatus = ref(false)
 
 const form = ref({
@@ -171,11 +243,12 @@ const form = ref({
   delivery: false,
   type: [],
   resource: '',
-  desc: '',
+  keyWord: '',
 })
 
 const onSubmit = () => {
-  console.log('submit!')
+    console.log('submit!')
+    // getUserData()
 }
 
 const openSelect = () => {
@@ -184,115 +257,128 @@ const openSelect = () => {
 
 const cancel = () => {
     groupStatus.value = false
-    pointStatus.value = false
+    editStatus.value = false
 }
 
-const tableData = [
-  {
-    name:'使用者1',
-    income:'1',
-    expense:'2',
-    remain:'3'
-  },
-  {
-    name:'使用者1',
-    income:'1',
-    expense:'2',
-    remain:'3'
-  },
-  {
-    name:'使用者1',
-    income:'1',
-    expense:'2',
-    remain:'3'
-  },
-  {
-    name:'使用者1',
-    income:'1',
-    expense:'2',
-    remain:'3'
-  },
-  {
-    name:'使用者1',
-    income:'1',
-    expense:'2',
-    remain:'3'
-  },
-  {
-    name:'使用者1',
-    income:'1',
-    expense:'2',
-    remain:'3'
-  },
-  {
-    name:'使用者1',
-    income:'1',
-    expense:'2',
-    remain:'3'
-  },
-  {
-    name:'使用者1',
-    income:'1',
-    expense:'2',
-    remain:'3'
-  },
+const userData = ref({})
+const editStatus = ref(false)
+const editUser = (item) => {
+    // console.log('editUser',item.row)
+    userData.value = JSON.parse(JSON.stringify(item.row))
+    // console.log('userData.value',userData.value)
+    editStatus.value = true
+}
+const userList = ref([])
+const totalCount = ref(0)
+const page = ref(1)
+const getUserData = async() => {
+    if(loadStatus.value){
+        return false
+    }
+    
+    loadStatus.value = true
+    const formData = new FormData();
+    // formData.append("draw", 99);
+    formData.append("length", 10);
+    formData.append("start", (page.value-1)*10);
+    // formData.append("sortColumn", '');
+    // formData.append("sortColumnDirection", '');
+    if(form.value.keyWord){
+        formData.append("searchValue",form.value.keyWord);
+    }
 
-]
+    await getUserList(formData).then((res) => {
+        // console.log('getUserList',res.data)
+        if(res.data.status){
+            userList.value = res.data.data
+            totalCount.value = res.data.totalCount
 
-const pointForm = ref({
-    user:'',
-    amount:'',
-    reason:''
-})
+            // console.log('userList.value',userList.value)
+        }else{
+        }
 
-const pointStatus = ref(false)
-const editPoint = (item) => {
-    console.log('editPoint',item)
-    pointStatus.value = true
+        loadStatus.value = false
+    })
 }
 
-const checkPoint = () => {
-    console.log('pointForm',pointForm.value)
+const roleData = ref([])
+const getRoleData = async() => {
+    await getRoleList().then((res) => {
+        // console.log(res.data.data)
+        if(res.data.status){
+            roleData.value = res.data.data
+            // console.log('roleData.value',roleData.value)
+        }else{
+        }
+    })
 }
 
 const init = async() => {
-
-    await getRoleList().then((res) => {
-        console.log(res.data)
-        if(res.data.status){
-
-        }else{
-        }
-    })
-
-    const formData = new FormData();
-    formData.append("draw", 1);
-    formData.append("length", 20);
-    formData.append("start", 1);
-    // formData.append("sortColumn", '');
-    // formData.append("sortColumnDirection", '');
-    // formData.append("searchValue",'');
-
-    let payload = {
-        draw:1,
-        length:20,
-        start:1,
-        // sortColumn:'',
-        // sortColumnDirection:'',
-        // searchValue:''
-    }
-    await getUserList(formData).then((res) => {
-        console.log(res.data)
-        if(res.data.status){
-
-        }else{
-        }
-    })
-
-    
+    await getRoleData()
+    await getUserData()
 }
 
 init()
+
+const changePage = (value) => {
+    page.value = value
+    getUserData()
+    // console.log('page',value)
+}
+
+const transformRole = (value) => {
+    return roleData.value.find((item)=> item.id==value)?.name
+}
+
+const saveEdit = async() => {
+    // console.log('userData',userData.value)
+    // console.log('userData',userData.value.birthday.toISOString())
+    const formData = new FormData();
+    formData.append("id", userData.value.id);
+    formData.append("name", userData.value.name);
+    formData.append("nickName", userData.value.nickName);
+    formData.append("gender", userData.value.gender);
+    formData.append("phone", userData.value.phone);
+    formData.append("lineId", userData.value.lineId);
+    formData.append("email", userData.value.email);
+    formData.append("roleId", userData.value.roleId);
+    // console.log('typeof',typeof userData.value.birthday)
+    if(typeof userData.value.birthday == 'string'){
+        formData.append("birthday", userData.value.birthday);
+    }else{
+        formData.append("birthday", userData.value.birthday.toISOString());
+    }
+    
+//     -F 'roleName=' \
+//   -F 'gender=' \
+//   -F 'name=' \
+//   -F 'account=' \
+//   -F 'isEnable=' \
+//   -F 'nickName=' \
+//   -F 'phone=' \
+//   -F 'lineId=' \
+//   -F 'secondPassword=' \
+//   -F 'roleId=' \
+//   -F 'pictureUrl=' \
+//   -F 'token=' \
+//   -F 'id=' \
+//   -F 'password=' \
+//   -F 'email=' \
+//   -F 'birthday='
+
+    await setUserEdit(formData).then((res) => {
+        // console.log('setUserEdit',res)
+        if(res.data.status){
+        }else{
+        }
+        
+    })
+
+    await getUserData()
+    cancel()
+    userData.value = {}
+
+} 
 
 </script>
 

@@ -111,6 +111,15 @@ export const getUserList = (data) => {
   })
 }
 
+export const setUserEdit = (data) => {
+  const url = '/User/Edit'
+  const method = 'post'
+  return request({
+    method,
+    url,
+    data
+  })
+}
 
 const addToUrl = (payload) => {
   let str = '?'
