@@ -281,6 +281,8 @@ const getUserData = async() => {
     // formData.append("draw", 99);
     formData.append("length", 10);
     formData.append("start", (page.value-1)*10);
+    formData.append("sortColumn",'id');
+    formData.append("sortColumnDirection",'desc');
     // formData.append("sortColumn", '');
     // formData.append("sortColumnDirection", '');
     if(form.value.keyWord){
