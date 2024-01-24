@@ -70,13 +70,14 @@ init()
 
 onMounted(() => {
   setWidth()
-  if(window.innerWidth>768){
-    if(!announceStatus.value){
+
+  if(loginStore.status){
+    headerStore.openHeader()
+    if(!isMobile.value){
       menuStore.openMenu()
     }
-  }else{
-    menuStore.closeMenu()
   }
+
   window.addEventListener('resize', () => {
     setWidth()
   }, false);

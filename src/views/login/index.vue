@@ -64,12 +64,16 @@
 /*eslint-disable*/
 import { testLogin,getLineInformation,getCaptcha } from '@/api/api'
 import { ref,computed,onMounted } from 'vue';
-import { useLoginStore,useMenuStore,useheaderStore } from '@/stores/index'
+import { useLoginStore,useMenuStore,useheaderStore,useMobileStore } from '@/stores/index'
 import { useRouter } from "vue-router";
 const loginStore = useLoginStore()
 const menuStore = useMenuStore()
 const headerStore = useheaderStore()
 const router = useRouter()
+const mobileStore = useMobileStore()
+const isMobile = computed(() => {
+  return mobileStore.isMobile
+})
 
 const captchaData = ref({})
 const setCaptcha = () => {
@@ -184,7 +188,9 @@ const login = async() => {
       if(res.data.status){
           loginStore.setToken(res.data.data)
           resetForm()
-          menuStore.openMenu()
+          if(!isMobile.value){
+            menuStore.openMenu()
+          }
           headerStore.openHeader()
           router.push({ path: '/' })
       }else{
