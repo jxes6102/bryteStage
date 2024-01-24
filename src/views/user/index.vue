@@ -51,37 +51,62 @@
         </div>
         <div class="line-style w-[100%] text-[#D3D3D3] flex"></div>
         <div class="w-full md:w-[75%] lg:w-[80%] h-auto my-1 px-2 py-1 flex flex-wrap justify-center items-center">
-            <el-table :data="userList" style="width: 100%">
-                <el-table-column prop="account" label="帳號" > 
+            <el-table 
+                :row-class-name="tableRowClassName"
+                :data="userList" 
+                style="width: 100%;font-size:16px;">
+                <el-table-column prop="account" >
+                    <template #header="scope">
+                        <div class="flex flex-wrap">
+                            <div class="cursor-pointer" @click="sortCol(scope.column.property)">帳號</div>
+                            <el-icon class="ml-[1px] md:ml-1 cursor-pointer" @click="sortSize(scope.column.property)" :size="20">
+                                <Sort />
+                            </el-icon>
+                        </div>
+                    </template>
                     <template #default="scope">
                         <div class="truncate">{{ scope.row.account }}</div>
                     </template>
                 </el-table-column>
-                <!-- <el-table-column prop="email" label="電子郵件" > 
-                    <template #default="scope">
-                        <div class="truncate">{{ scope.row.email }}</div>
+                <el-table-column prop="gender" >
+                    <template #header="scope">
+                        <div class="flex flex-wrap">
+                            <div class="cursor-pointer" @click="sortCol(scope.column.property)">性別</div>
+                            <el-icon class="ml-[1px] md:ml-1 cursor-pointer" @click="sortSize(scope.column.property)" :size="20">
+                                <Sort />
+                            </el-icon>
+                        </div>
                     </template>
-                </el-table-column> -->
-                <el-table-column prop="gender" label="性別" > 
                     <template #default="scope">
                         <div class="truncate">{{ scope.row.gender }}</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" > 
+                <el-table-column prop="name" >
+                    <template #header="scope">
+                        <div class="flex flex-wrap">
+                            <div class="cursor-pointer" @click="sortCol(scope.column.property)">姓名</div>
+                            <el-icon class="ml-[1px] md:ml-1 cursor-pointer" @click="sortSize(scope.column.property)" :size="20">
+                                <Sort />
+                            </el-icon>
+                        </div>
+                    </template> 
                     <template #default="scope">
                         <div class="truncate">{{ scope.row.name }}</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="nickName" label="暱稱" > 
+                <el-table-column prop="nickName" >
+                    <template #header="scope">
+                        <div class="flex flex-wrap">
+                            <div class="cursor-pointer" @click="sortCol(scope.column.property)">暱稱</div>
+                            <el-icon class="ml-[1px] md:ml-1 cursor-pointer" @click="sortSize(scope.column.property)" :size="20">
+                                <Sort />
+                            </el-icon>
+                        </div>
+                    </template>
                     <template #default="scope">
                         <div class="truncate">{{ scope.row.nickName }}</div>
                     </template>
                 </el-table-column>
-                <!-- <el-table-column prop="phone" label="電話" > 
-                    <template #default="scope">
-                        <div class="truncate">{{ scope.row.phone }}</div>
-                    </template>
-                </el-table-column> -->
                 <el-table-column prop="roleId" label="身分" > 
                     <template #default="scope">
                         <div class="truncate">{{ transformRole(scope.row.roleId) }}</div>
@@ -98,8 +123,8 @@
         </div>
         <div class="w-full md:w-[80%] h-auto flex flex-wrap justify-center items-center">
             <el-pagination
-                small
-                background
+                :small="isMobile"
+                :background="!isMobile"
                 layout="prev, pager, next"
                 :current-page="page"
                 :total="totalCount"
@@ -225,16 +250,17 @@ import choseGroup from "@/components/choseGroup.vue"
 
 const router = useRouter()
 const route = useRoute()
-
 const mobileStore = useMobileStore()
-
-const isMobile = computed(() => {
-  return mobileStore.isMobile
-})
-
 const loadStatus = ref(false)
 const groupStatus = ref(false)
-
+const userData = ref({})
+const editStatus = ref(false)
+const userList = ref([])
+const totalCount = ref(0)
+const page = ref(1)
+let sortColumnKey = 'account'
+let colSizeObj = {}
+const roleData = ref([])
 const form = ref({
   name: '',
   region: '',
@@ -244,6 +270,9 @@ const form = ref({
   type: [],
   resource: '',
   keyWord: '',
+})
+const isMobile = computed(() => {
+  return mobileStore.isMobile
 })
 
 const onSubmit = () => {
@@ -260,17 +289,13 @@ const cancel = () => {
     editStatus.value = false
 }
 
-const userData = ref({})
-const editStatus = ref(false)
 const editUser = (item) => {
     // console.log('editUser',item.row)
     userData.value = JSON.parse(JSON.stringify(item.row))
     // console.log('userData.value',userData.value)
     editStatus.value = true
 }
-const userList = ref([])
-const totalCount = ref(0)
-const page = ref(1)
+
 const getUserData = async() => {
     if(loadStatus.value){
         return false
@@ -281,8 +306,12 @@ const getUserData = async() => {
     // formData.append("draw", 99);
     formData.append("length", 10);
     formData.append("start", (page.value-1)*10);
-    formData.append("sortColumn",'id');
-    formData.append("sortColumnDirection",'desc');
+    formData.append("sortColumn",sortColumnKey);
+    if(!colSizeObj[sortColumnKey]){
+        formData.append("sortColumnDirection",'desc');
+    }else{
+        formData.append("sortColumnDirection",'asc');
+    }
     // formData.append("sortColumn", '');
     // formData.append("sortColumnDirection", '');
     if(form.value.keyWord){
@@ -290,12 +319,10 @@ const getUserData = async() => {
     }
 
     await getUserList(formData).then((res) => {
-        // console.log('getUserList',res.data)
         if(res.data.status){
             userList.value = res.data.data
             totalCount.value = res.data.totalCount
 
-            // console.log('userList.value',userList.value)
         }else{
         }
 
@@ -303,29 +330,19 @@ const getUserData = async() => {
     })
 }
 
-const roleData = ref([])
 const getRoleData = async() => {
     await getRoleList().then((res) => {
-        // console.log(res.data.data)
         if(res.data.status){
             roleData.value = res.data.data
-            // console.log('roleData.value',roleData.value)
-        }else{
         }
     })
 }
 
-const init = async() => {
-    await getRoleData()
-    await getUserData()
-}
 
-init()
 
 const changePage = (value) => {
     page.value = value
     getUserData()
-    // console.log('page',value)
 }
 
 const transformRole = (value) => {
@@ -333,8 +350,6 @@ const transformRole = (value) => {
 }
 
 const saveEdit = async() => {
-    // console.log('userData',userData.value)
-    // console.log('userData',userData.value.birthday.toISOString())
     const formData = new FormData();
     formData.append("id", userData.value.id);
     formData.append("name", userData.value.name);
@@ -344,7 +359,6 @@ const saveEdit = async() => {
     formData.append("lineId", userData.value.lineId);
     formData.append("email", userData.value.email);
     formData.append("roleId", userData.value.roleId);
-    // console.log('typeof',typeof userData.value.birthday)
     if(typeof userData.value.birthday == 'string'){
         formData.append("birthday", userData.value.birthday);
     }else{
@@ -369,9 +383,7 @@ const saveEdit = async() => {
 //   -F 'birthday='
 
     await setUserEdit(formData).then((res) => {
-        // console.log('setUserEdit',res)
         if(res.data.status){
-        }else{
         }
         
     })
@@ -380,7 +392,38 @@ const saveEdit = async() => {
     cancel()
     userData.value = {}
 
-} 
+}
+
+const tableRowClassName = (item) => {
+    if ((item.rowIndex%2) == 1) {
+        return 'even-row'
+    }
+    return ''
+}
+
+const sortCol = (value) => {
+    if(sortColumnKey!=value){
+        sortColumnKey = value
+        getUserData()
+    }
+}
+
+const sortSize = (value) => {
+    sortColumnKey = value
+    if(!colSizeObj[sortColumnKey]){
+        colSizeObj[sortColumnKey] = true
+    }else{
+        colSizeObj[sortColumnKey] = !colSizeObj[sortColumnKey]
+    }
+    getUserData()
+}
+
+const init = async() => {
+    await getRoleData()
+    await getUserData()
+}
+
+init()
 
 </script>
 
@@ -402,4 +445,7 @@ const saveEdit = async() => {
 
 }
 
+:deep(.el-table .even-row) {
+    --el-table-tr-bg-color: rgb(249 250 251);
+}
 </style>
