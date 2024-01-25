@@ -43,12 +43,17 @@ instance.interceptors.response.use(
     // console.log('X-Refresh-Token',response.headers.get("x-auth-token"));
     // console.log('content-type',response.headers["content-type"])
     // console.log('X-Refresh-Token',response.headers["x-auth-token"])
-    // console.log('X-Refresh-Token',JSON.parse(response.headers["X-Refresh-Token"]))
-    
+    // console.log('X-Refresh-Token',response.headers["X-Refresh-Token"])
+    // console.log('response',response)
     return response;
   },
   error => {
     // console.log('interceptors.response error',error)
+    if(error.response.status == 401){
+      // console.log('未允許拿取')
+      let returnUrl = '#/loginView'
+      window.location.replace((window.location.origin + window.location.pathname+returnUrl))
+    }
     return Promise.reject(error);
   }
 );

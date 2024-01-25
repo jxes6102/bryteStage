@@ -73,3 +73,11 @@ export const useLoginStore = defineStore('login', () => {
     }
     return { status,setToken,clearToken,isLogin }
 })
+
+export const useUserStore = defineStore('user', () => {
+    const information = ref({})
+    const setUserInformation = (value) => {
+        information.value = value
+    }
+    return { information,setUserInformation }
+})

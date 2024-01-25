@@ -9,7 +9,8 @@ import organizeView from '../views/organize/index.vue'
 import loginView from '../views/login/index.vue'
 import userView from '../views/user/index.vue'
 import errorView from '../views/errorView.vue'
-import { useLoginStore } from '@/stores/index'
+import { useLoginStore,useUserStore } from '@/stores/index'
+import { checkToken } from '@/api/api'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -85,8 +86,21 @@ const allow = ['loginView']
 router.beforeEach((to, from) => {
   // console.log('to',to.name)
   const loginStore = useLoginStore()
+  const userStore = useUserStore()
   if(!(allow.includes(to.name) || loginStore?.status)){
     return '/loginView'
+  }
+  if(loginStore?.status){
+    checkToken().then((res) => {
+      // console.log('checkToken api',res)
+      if(res.data.status){
+        // console.log('checkToken yes')
+        userStore.setUserInformation(res.data.data)
+      }else{
+        // console.log('checkToken no')
+        return '/loginView'
+      }
+    })
   }
   // explicitly return false to cancel the navigation
   // return false
