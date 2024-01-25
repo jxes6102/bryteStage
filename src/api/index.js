@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useLoginStore } from '@/stores/index'
 
 export const TIMEOUT = 10000
 
@@ -51,6 +52,8 @@ instance.interceptors.response.use(
     // console.log('interceptors.response error',error)
     if(error.response.status == 401){
       // console.log('未允許拿取')
+      const loginStore = useLoginStore()
+      loginStore.clearToken()
       let returnUrl = '#/loginView'
       window.location.replace((window.location.origin + window.location.pathname+returnUrl))
     }
