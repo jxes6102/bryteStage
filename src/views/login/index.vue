@@ -48,7 +48,7 @@
                     </el-input>
                 </el-form-item>
             </el-form>
-            <div class="w-full min-h-[15px] text-red-600 text-sm md:text-lg">
+            <div class="w-full min-h-[15px] text-red-600 text-sm md:text-lg flex flex-wrap justify-center items-center">
                 {{loginMessage || ''}}
             </div>
             <div class="w-full mt-1 flex flex-wrap justify-center items-center">忘記了您的密碼嗎? 請與各分校老師進行詢問，謝謝。</div>
