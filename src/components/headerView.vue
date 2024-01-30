@@ -12,7 +12,7 @@
         </div>
         <div 
             class="absolute right-[10px] md:right-[20px] top-[calc(50%_-_0.5rem)] md:top-[calc(50%_-_0.5rem)] text-white text-sm md:text-base">
-            會員名稱
+            {{ userData.name }}
         </div>
     </div>
 </template>
@@ -21,16 +21,21 @@
 /*eslint-disable*/
 import { ref,computed } from "vue";
 import { useRouter,useRoute } from "vue-router";
-import { useMobileStore,useMenuStore } from '@/stores/index'
+import { useMobileStore,useMenuStore,useUserStore } from '@/stores/index'
 
 const router = useRouter()
 const route = useRoute()
 
 const mobileStore = useMobileStore()
 const menuStore = useMenuStore()
+const userStore = useUserStore()
 
 const isMobile = computed(() => {
   return mobileStore.isMobile
+})
+
+const userData = computed(() => {
+  return userStore.information
 })
 
 const changeMenu = () => {

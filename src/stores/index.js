@@ -79,5 +79,8 @@ export const useUserStore = defineStore('user', () => {
     const setUserInformation = (value) => {
         information.value = value
     }
-    return { information,setUserInformation }
+    const clearUserInformation = () => {
+        information.value = {}
+    }
+    return { information,setUserInformation,clearUserInformation }
 })
