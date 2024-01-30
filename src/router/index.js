@@ -94,12 +94,10 @@ router.beforeEach((to, from) => {
     checkToken().then((res) => {
       // console.log('checkToken api',res)
       if(res.data.status){
-        // console.log('checkToken yes')
         userStore.setUserInformation(res.data.data)
       }else{
         loginStore.clearToken()
         userStore.clearUserInformation()
-        // console.log('checkToken no')
         return '/loginView'
       }
     })
