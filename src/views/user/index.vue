@@ -150,12 +150,15 @@
                     <div class="w-[100%] h-auto flex flex-wrap justify-center items-center overflow-x-hidden overflow-y-auto">
                         <el-form :inline="false" label-position="top" :model="userData" label-width="60px" style="width:100%;padding:10px 5px;">
                             <el-form-item label="帳號">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-input :disabled="true" placeholder="" v-model="userData.account" />
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             <el-form-item label="生日">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-date-picker
                                         popper-class="custom-date-picker"
                                         v-model="userData.birthday"
@@ -166,14 +169,18 @@
                                     />
                                     <!-- <el-input placeholder="" v-model="userData.birthday" /> -->
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             <el-form-item label="電子郵件">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-input placeholder="" v-model="userData.email" />
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             <el-form-item label="性別">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-select
                                         style="width: 100%;font-size: 14px;"
                                         v-model="userData.gender" 
@@ -182,6 +189,7 @@
                                         <el-option label="女" value="女" />
                                     </el-select>
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             <!-- <el-form-item label="userdID">
                                 <el-col :span="24">
@@ -189,27 +197,36 @@
                                 </el-col>
                             </el-form-item> -->
                             <el-form-item label="lineID">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-input placeholder="" v-model="userData.lineId" />
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             <el-form-item label="姓名">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-input placeholder="" v-model="userData.name" />
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             <el-form-item label="暱稱">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-input placeholder="" v-model="userData.nickName" />
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             <el-form-item label="電話">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-input placeholder="" v-model="userData.phone" />
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             <el-form-item label="身分">
-                                <el-col :span="24">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="22">
                                     <el-select
                                         style="width: 100%;font-size: 14px;"
                                         v-model="userData.roleId" 
@@ -219,6 +236,7 @@
                                         </template>
                                     </el-select>
                                 </el-col>
+                                <el-col :span="1"></el-col>
                             </el-form-item>
                             
                         </el-form>
@@ -448,4 +466,17 @@ init()
 :deep(.el-table .even-row) {
     --el-table-tr-bg-color: rgb(249 250 251);
 }
+
+:deep(.el-form-item__label){
+    margin: 0px 0px 0px 0px !important;
+    padding: 0px 10px !important;
+}
+
+@media screen and (min-width: 768px) {
+    :deep(.el-form-item__label){
+        margin: 0px 0px 0px 0px !important;
+        padding: 0px 15px !important;
+    }
+}
+
 </style>

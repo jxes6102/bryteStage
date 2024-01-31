@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import parameterView from '../views/parameter/index.vue'
-import permissionView from '../views/permission/index.vue'
-import newsView from '../views/news/index.vue'
-import pointView from '../views/point/index.vue'
-import notificationView from '../views/notification/index.vue'
-import organizeView from '../views/organize/index.vue'
+// import parameterView from '../views/parameter/index.vue'
+// import permissionView from '../views/permission/index.vue'
+// import newsView from '../views/news/index.vue'
+// import pointView from '../views/point/index.vue'
+// import notificationView from '../views/notification/index.vue'
+// import organizeView from '../views/organize/index.vue'
 import loginView from '../views/login/index.vue'
 import userView from '../views/user/index.vue'
 import errorView from '../views/errorView.vue'
@@ -20,41 +20,37 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
-    {
-      path: '/parameterView',
-      name: 'parameterView',
-      component: parameterView
-    },
-    {
-      path: '/permissionView',
-      name: 'permissionView',
-      component: permissionView
-    },
-    { 
-      path: '/newsView',
-      name: 'newsView',
-      component: newsView 
-    },
-    { 
-      path: '/pointView',
-      name: 'pointView',
-      component: pointView 
-    },
-    { 
-      path: '/pointView',
-      name: 'pointView',
-      component: pointView 
-    },
-    { 
-      path: '/notificationView',
-      name: 'notificationView',
-      component: notificationView 
-    },
-    { 
-      path: '/organizeView',
-      name: 'organizeView',
-      component: organizeView 
-    },
+    // {
+    //   path: '/parameterView',
+    //   name: 'parameterView',
+    //   component: parameterView
+    // },
+    // {
+    //   path: '/permissionView',
+    //   name: 'permissionView',
+    //   component: permissionView
+    // },
+    // { 
+    //   path: '/newsView',
+    //   name: 'newsView',
+    //   component: newsView 
+    // },
+    // { 
+    // { 
+    //   path: '/pointView',
+    //   name: 'pointView',
+    //   component: pointView 
+    // },
+    // { 
+    //   path: '/notificationView',
+    //   name: 'notificationView',
+    //   component: notificationView 
+    // },
+    // { 
+    //   path: '/organizeView',
+    //   name: 'organizeView',
+    //   component: organizeView 
+    // },
     { 
       path: '/loginView',
       name: 'loginView',
