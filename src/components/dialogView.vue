@@ -14,7 +14,7 @@
                 'w-[270px] h-[450px] md:w-[400px] md:h-[600px] ' : type == 'default',
                 'w-[90vw] h-[450px] md:w-[700px] md:h-[600px] ' : type == 'large',
                 'w-[270px] h-[280px] md:w-[500px] md:h-[300px] ' : type == 'small',
-                'w-[90vw] md:w-[700px] h-auto max-h-[70vh]' : type == 'auto'
+                'w-[90vw] md:w-[400px] h-auto max-h-[70vh]' : type == 'auto'
             }"
             class="animate__animated animate__bounceIn rounded-lg bg-white flex flex-col justify-center items-center "
         >

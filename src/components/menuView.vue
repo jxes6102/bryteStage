@@ -94,6 +94,11 @@ const urlData = ref([
         url:'/userView'
     },
     {
+        name:'家長管理',
+        icon:'Avatar',
+        url:'/parentView'
+    },
+    {
         name:'豋出',
         url:'/loginView'
     },

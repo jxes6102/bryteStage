@@ -107,9 +107,9 @@
                         <div class="truncate">{{ scope.row.nickName }}</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="roleId" label="身分" > 
+                <el-table-column prop="roleName" label="身分" > 
                     <template #default="scope">
-                        <div class="truncate">{{ transformRole(scope.row.roleId) }}</div>
+                        <div class="truncate">{{ scope.row.roleName }}</div>
                     </template>
                 </el-table-column>
                 <el-table-column width="90" label="操作" > 
@@ -232,7 +232,7 @@
                                         v-model="userData.roleId" 
                                         placeholder="">
                                         <template v-for="(item,index) in roleData" :key="index">
-                                            <el-option :label="item.name" :value="item.id" />
+                                            <el-option :label="item.label" :value="item.value" />
                                         </template>
                                     </el-select>
                                 </el-col>
@@ -308,9 +308,7 @@ const cancel = () => {
 }
 
 const editUser = (item) => {
-    // console.log('editUser',item.row)
     userData.value = JSON.parse(JSON.stringify(item.row))
-    // console.log('userData.value',userData.value)
     editStatus.value = true
 }
 
@@ -351,7 +349,7 @@ const getUserData = async() => {
 const getRoleData = async() => {
     await getRoleList().then((res) => {
         if(res.data.status){
-            roleData.value = res.data.data
+            roleData.value = res.data.data.optionList
         }
     })
 }
@@ -382,23 +380,6 @@ const saveEdit = async() => {
     }else{
         formData.append("birthday", userData.value.birthday.toISOString());
     }
-    
-//     -F 'roleName=' \
-//   -F 'gender=' \
-//   -F 'name=' \
-//   -F 'account=' \
-//   -F 'isEnable=' \
-//   -F 'nickName=' \
-//   -F 'phone=' \
-//   -F 'lineId=' \
-//   -F 'secondPassword=' \
-//   -F 'roleId=' \
-//   -F 'pictureUrl=' \
-//   -F 'token=' \
-//   -F 'id=' \
-//   -F 'password=' \
-//   -F 'email=' \
-//   -F 'birthday='
 
     await setUserEdit(formData).then((res) => {
         if(res.data.status){
@@ -437,7 +418,7 @@ const sortSize = (value) => {
 }
 
 const init = async() => {
-    await getRoleData()
+    getRoleData()
     await getUserData()
 }
 

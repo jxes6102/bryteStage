@@ -92,17 +92,8 @@ export const getCaptcha = () => {
   })
 }
 
-export const getRoleList = () => {
-  const url = '/User/GetRoleList'
-  const method = 'get'
-  return request({
-    method,
-    url,
-  })
-}
-
 export const getUserList = (data) => {
-  const url = '/User/GetDataList'
+  const url = '/User/GetDataListPagination'
   const method = 'post'
   return request({
     method,
@@ -127,6 +118,94 @@ export const checkToken = () => {
   return request({
     method,
     url
+  })
+}
+
+export const getParentUser = (data) => {
+  const url = '/Parent/GetParentUserListPagination'
+  const method = 'post'
+  return request({
+    method,
+    url,
+    data
+  })
+}
+
+export const getParentListByUser = (data) => {
+  const url = '/Parent/GetParentListByUserPagination'
+  const method = 'post'
+  return request({
+    method,
+    url,
+    data
+  })
+}
+
+export const parentCreate = (data) => {
+  const url = '/Parent/Create'
+  const method = 'post'
+  return request({
+    method,
+    url,
+    data
+  })
+}
+
+export const getRoleList = () => {
+  const url = '/Select/GetRoleSelect'
+  const method = 'post'
+  return request({
+    method,
+    url
+  })
+}
+
+export const getClassList = () => {
+  const url = '/Select/GetClassSelect'
+  const method = 'post'
+  return request({
+    method,
+    url
+  })
+}
+
+export const getStudentByClassIdList = (data) => {
+  const url = '/Select/GetStudentSelectByClassId'
+  const method = 'post'
+  return request({
+    method,
+    url,
+    data
+  })
+}
+
+export const createParent = (data) => {
+  const url = '/Parent/Create'
+  const method = 'post'
+  return request({
+    method,
+    url,
+    data
+  })
+}
+
+export const editParent = (data) => {
+  const url = '/Parent/Edit'
+  const method = 'post'
+  return request({
+    method,
+    url,
+    data
+  })
+}
+
+export const deleteParent = (data) => {
+  const url = '/Parent/SoftDelete'
+  const method = 'post'
+  return request({
+    method,
+    url,
+    data
   })
 }
 

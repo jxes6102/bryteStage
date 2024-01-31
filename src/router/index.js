@@ -6,6 +6,7 @@ import HomeView from '../views/HomeView.vue'
 // import pointView from '../views/point/index.vue'
 // import notificationView from '../views/notification/index.vue'
 // import organizeView from '../views/organize/index.vue'
+import parentView from '../views/parent/index.vue'
 import loginView from '../views/login/index.vue'
 import userView from '../views/user/index.vue'
 import errorView from '../views/errorView.vue'
@@ -20,41 +21,15 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
-    // {
-    //   path: '/parameterView',
-    //   name: 'parameterView',
-    //   component: parameterView
-    // },
-    // {
-    //   path: '/permissionView',
-    //   name: 'permissionView',
-    //   component: permissionView
-    // },
-    // { 
-    //   path: '/newsView',
-    //   name: 'newsView',
-    //   component: newsView 
-    // },
-    // { 
-    // { 
-    //   path: '/pointView',
-    //   name: 'pointView',
-    //   component: pointView 
-    // },
-    // { 
-    //   path: '/notificationView',
-    //   name: 'notificationView',
-    //   component: notificationView 
-    // },
-    // { 
-    //   path: '/organizeView',
-    //   name: 'organizeView',
-    //   component: organizeView 
-    // },
     { 
       path: '/loginView',
       name: 'loginView',
       component: loginView 
+    },
+    { 
+      path: '/parentView',
+      name: 'parentView',
+      component: parentView 
     },
     { 
       path: '/userView',
