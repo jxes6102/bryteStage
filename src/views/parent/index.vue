@@ -335,6 +335,17 @@ const form = ref({
   resource: '',
   keyWord: '',
 })
+const editStudentStatus = ref(false)
+const parentList = ref([])
+const parentData = ref({})
+const classList = ref([])
+const studentList = ref([])
+const studentData = ref({
+    class:'',
+    studentId:'',
+    studentSchoolStudentId:''
+})
+
 const isMobile = computed(() => {
   return mobileStore.isMobile
 })
@@ -358,6 +369,7 @@ const bindStudent = async(item) => {
     await getParentData(item.row.id)
     modeKey.value = 2
 }
+
 const backSearch = async(item) => {
     page.value = 1
     sortColumnKey = 'account'
@@ -366,11 +378,12 @@ const backSearch = async(item) => {
     await getUserData()
     modeKey.value = 1
 }
-const editStudentStatus = ref(false)
+
 const addStudent = () => {
     isAdd.value = true
     editStudentStatus.value = true 
 }
+
 const closeStudent = () => {
     reSetData()
     editStudentStatus.value = false
@@ -410,8 +423,6 @@ const getUserData = async() => {
     })
 }
 
-const parentList = ref([])
-const parentData = ref({})
 const getParentData = async(userId) => {
     if(loadStatus.value){
         return false
@@ -442,20 +453,12 @@ const getParentData = async(userId) => {
     })
 }
 
-
-
 const changePage = (value) => {
     page.value = value
     getUserData()
 }
 
 const saveEdit = async() => {
-    
-    // console.log('studentData',studentData.value)
-    // console.log('parentData',parentData.value)
-    // // console.log('studentList',studentList.value)
-    
-    // console.log('studentUserName',studentUserName)
     const formData = new FormData();
     formData.append("userId", parentData.value.id);
     formData.append("userName", parentData.value.name);
@@ -479,13 +482,9 @@ const saveEdit = async() => {
     await getParentData(parentData.value.id)
     closeStudent()
     
-
 }
 
 const createStudent = async(formData) => {
-    // for (var pair of formData.entries()) {
-    //     console.log(pair[0]+ ', ' + pair[1]); 
-    // }
     await createParent(formData).then((res) => {
         console.log('createParent',res)
     })
@@ -524,12 +523,6 @@ const sortSize = (value) => {
     getUserData()
 }
 
-const classList = ref([])
-const studentData = ref({
-    class:'',
-    studentId:'',
-    studentSchoolStudentId:''
-})
 const getClass = () => {
     
     getClassList().then((res) => {
@@ -540,7 +533,7 @@ const getClass = () => {
         }
     })
 }
-const studentList = ref([])
+
 const getStudent = () => {
     const formData = new FormData();
     formData.append("classId", studentData.value.class);
