@@ -7,7 +7,7 @@
         </div>
         <div class="line-style w-[100%] text-[#D3D3D3] flex"></div>
         <div class="w-full md:w-[80%] my-2 p-1 md:p-2 rounded-md ">
-            <el-form :inline="!isMobile" :model="form" label-width="60px">
+            <el-form :inline="!isMobile" :model="form" label-width="80px">
                 <!-- <el-form-item label="集團">
                     <el-col :span="24">
                         <el-input
@@ -38,7 +38,7 @@
                     </el-col>
                 </el-form-item> -->
                 <el-form-item label="關鍵字">
-                    <el-col :span="24">
+                    <el-col :span="isMobile ? 22 : 24">
                         <el-input placeholder="請輸入" v-model="form.keyWord" />
                     </el-col>
                 </el-form-item>
