@@ -251,7 +251,7 @@
                                             <el-option :label="item.label" :value="item.value" />
                                         </template>
                                     </el-select>
-                                    <el-input v-if="!isAdd" disabled placeholder="" v-model="studentData.id" />
+                                    <el-input v-if="!isAdd" disabled placeholder="" v-model="studentData.studentUserName" />
                                 </el-col>
                                 <el-col :span="1"></el-col>
                             </el-form-item>
@@ -441,7 +441,12 @@ const getParentData = async(userId) => {
 
 const changePage = (value) => {
     page.value = value
-    getUserData()
+    if(modeKey.value == 1){
+        getUserData()
+    }else if(modeKey.value == 2){
+        getParentData(parentData.value.id)
+    }
+    
 }
 
 const saveEdit = async() => {
@@ -495,7 +500,11 @@ const tableRowClassName = (item) => {
 const sortCol = (value) => {
     if(sortColumnKey!=value){
         sortColumnKey = value
-        getUserData()
+        if(modeKey.value == 1){
+            getUserData()
+        }else if(modeKey.value == 2){
+            getParentData(parentData.value.id)
+        }
     }
 }
 
@@ -506,7 +515,11 @@ const sortSize = (value) => {
     }else{
         colSizeObj[sortColumnKey] = !colSizeObj[sortColumnKey]
     }
-    getUserData()
+    if(modeKey.value == 1){
+            getUserData()
+    }else if(modeKey.value == 2){
+        getParentData(parentData.value.id)
+    }
 }
 
 const getClass = () => {

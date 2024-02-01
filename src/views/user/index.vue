@@ -174,7 +174,7 @@
                             <el-form-item label="電子郵件">
                                 <el-col :span="1"></el-col>
                                 <el-col :span="22">
-                                    <el-input placeholder="" v-model="userData.email" />
+                                    <el-input disabled placeholder="" v-model="userData.email" />
                                 </el-col>
                                 <el-col :span="1"></el-col>
                             </el-form-item>
@@ -196,13 +196,13 @@
                                     <el-input placeholder="" v-model="userData.id" />
                                 </el-col>
                             </el-form-item> -->
-                            <el-form-item label="lineID">
+                            <!-- <el-form-item label="lineID">
                                 <el-col :span="1"></el-col>
                                 <el-col :span="22">
                                     <el-input placeholder="" v-model="userData.lineId" />
                                 </el-col>
                                 <el-col :span="1"></el-col>
-                            </el-form-item>
+                            </el-form-item> -->
                             <el-form-item label="姓名">
                                 <el-col :span="1"></el-col>
                                 <el-col :span="22">
