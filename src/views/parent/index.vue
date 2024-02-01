@@ -218,13 +218,6 @@
                 <template v-slot:message>
                     <div class="w-[100%] h-auto flex flex-wrap justify-center items-center overflow-x-hidden overflow-y-auto">
                         <el-form :inline="false" label-position="top" :model="studentData" label-width="60px" style="width:100%;padding:10px 5px;">
-                            <el-form-item label="家長ID">
-                                <el-col :span="1"></el-col>
-                                <el-col :span="22">
-                                    <el-input disabled placeholder="" v-model="parentData.id" />
-                                </el-col>
-                                <el-col :span="1"></el-col>
-                            </el-form-item>
                             <el-form-item label="家長名稱">
                                 <el-col :span="1"></el-col>
                                 <el-col :span="22">
@@ -259,13 +252,6 @@
                                         </template>
                                     </el-select>
                                     <el-input v-if="!isAdd" disabled placeholder="" v-model="studentData.id" />
-                                </el-col>
-                                <el-col :span="1"></el-col>
-                            </el-form-item>
-                            <el-form-item label="學號">
-                                <el-col :span="1"></el-col>
-                                <el-col :span="22">
-                                    <el-input placeholder="" v-model="studentData.studentSchoolStudentId" />
                                 </el-col>
                                 <el-col :span="1"></el-col>
                             </el-form-item>
