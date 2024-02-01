@@ -1,14 +1,9 @@
 import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-// import parameterView from '../views/parameter/index.vue'
-// import permissionView from '../views/permission/index.vue'
-// import newsView from '../views/news/index.vue'
-// import pointView from '../views/point/index.vue'
-// import notificationView from '../views/notification/index.vue'
-// import organizeView from '../views/organize/index.vue'
 import parentView from '../views/parent/index.vue'
 import loginView from '../views/login/index.vue'
 import userView from '../views/user/index.vue'
+import scheduleView from '../views/schedule/index.vue'
 import errorView from '../views/errorView.vue'
 import { useLoginStore,useUserStore } from '@/stores/index'
 import { checkToken } from '@/api/api'
@@ -35,6 +30,11 @@ const router = createRouter({
       path: '/userView',
       name: 'userView',
       component: userView 
+    },
+    { 
+      path: '/scheduleView',
+      name: 'scheduleView',
+      component: scheduleView 
     },
     { 
       path: '/:pathMatch(.*)*',

@@ -99,6 +99,11 @@ const urlData = ref([
         url:'/parentView'
     },
     {
+        name:'日程管理',
+        icon:'Calendar',
+        url:'/scheduleView'
+    },
+    {
         name:'豋出',
         url:'/loginView'
     },
