@@ -21,7 +21,7 @@
             <div
                 v-if="closeStatus"
                 @click="close" 
-                class="absolute w-auto h-auto top-0 right-0 p-2 flex flex-wrap justify-center items-center cursor-pointer">
+                class="absolute w-auto h-auto top-0 right-0 p-1 md:p-2 flex flex-wrap justify-center items-center cursor-pointer">
                 <el-icon size="30"><Close /></el-icon>
             </div>
             <slot name="title"></slot>

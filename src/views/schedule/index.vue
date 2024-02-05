@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="w-full h-[100vh] flex flex-col justify-start items-start"
+        class="w-full h-[100vh] md:h-[auto] flex flex-col justify-start items-start"
     >
         <div class="w-full my-3 px-3 text-3xl flex flex-wrap justify-start items-center">
             日程管理
@@ -11,23 +11,35 @@
                 ref="calendar"
                 class="w-[700px] md:w-[75vw] h-auto flex flex-wrap justify-center md:justify-start items-center">
                 <template #header="{ date }">
-                    <div class="flex flex-col justify-center items-center">
-                        <span class="text-2xl">{{ date }}</span>
-                        <el-button-group>
-                            <!-- <el-button size="small" @click="selectDate('prev-year')">
-                                上一年
-                            </el-button> -->
-                            <el-button style="font-size:16px;" size="small" @click="selectDate('prev-month',date)">
-                                上個月
-                            </el-button>
-                            <el-button style="font-size:16px;" size="small" @click="selectDate('today',date)">今天</el-button>
-                            <el-button style="font-size:16px;" size="small" @click="selectDate('next-month',date)">
-                                下個月
-                            </el-button>
-                            <!-- <el-button size="small" @click="selectDate('next-year')">
-                                下一年
-                            </el-button> -->
-                        </el-button-group>
+                    <div class="w-full flex flex-wrap justify-between items-center">
+                        <div class="flex flex-col justify-center items-center">
+                            <span class="text-2xl md:text-3xl">{{ date }}</span>
+                            <el-button-group>
+                                <!-- <el-button size="small" @click="selectDate('prev-year')">
+                                    上一年
+                                </el-button> -->
+                                <el-button style="font-size:16px;" size="small" @click="selectDate('prev-month',date)">
+                                    上個月
+                                </el-button>
+                                <el-button style="font-size:16px;" size="small" @click="selectDate('today',date)">今天</el-button>
+                                <el-button style="font-size:16px;" size="small" @click="selectDate('next-month',date)">
+                                    下個月
+                                </el-button>
+                                <!-- <el-button size="small" @click="selectDate('next-year')">
+                                    下一年
+                                </el-button> -->
+                            </el-button-group>
+                        </div>
+                        <div class="flex flex-wrap justify-center items-center">
+                            <button
+                                class="w-auto text-base md:text-xl bg-blue-500 hover:bg-blue-600 text-white font-bold mx-2 py-1 px-2 md:py-2 md:px-3 rounded">
+                                匯出
+                            </button>
+                            <button
+                                class="w-auto text-base md:text-xl bg-blue-500 hover:bg-blue-600 text-white font-bold mx-2 py-1 px-2 md:py-2 md:px-3 rounded">
+                                匯出範例
+                            </button>
+                        </div>
                     </div>
                 </template>
                 <template #date-cell="item">
@@ -35,9 +47,9 @@
                         @click="edit($event,item.data)" 
                         class="w-full h-full flex flex-wrap justify-center items-start">
                         <div class="w-full flex flex-col justify-center items-start">
-                            <div class="w-full px-[1px] md:px-1">{{ item.data.day.substring(5,10) }}</div>
-                            <div class="w-full px-[1px] md:px-1">{{ dateData[item.data.day]?.name }}</div>
-                            <div class="w-full px-[1px] md:px-1">{{ dateData[item.data.day]?.stateName }}</div>
+                            <div class="w-full text-lg md:text-2xl px-[2px] py-[1px] md:px-2 md:py-[2px]">{{ item.data.day.substring(5,10) }}</div>
+                            <div class="w-full text-base md:text-xl px-[2px] py-[1px] md:px-2 md:py-[2px]">{{ dateData[item.data.day]?.name }}</div>
+                            <div class="w-full text-base md:text-xl px-[2px] py-[1px] md:px-2 md:py-[2px]">{{ dateData[item.data.day]?.stateName }}</div>
                         </div>
                     </div>
                 </template>
@@ -46,7 +58,7 @@
         <Teleport to="body">
             <dialogView type="auto" @close="cancel" v-if="editStatus">
                 <template v-slot:title>
-                    <div class="w-full my-[1px] md:my-1 px-2 py-[1px] md:py-1 text-2xl">編輯日程({{ scheduleData.scheduleDate.substring(0,10) }})</div>
+                    <div class="w-full my-[1px] md:my-1 px-2 py-[1px] md:py-1 text-lg md:text-2xl">編輯日程({{ scheduleData.scheduleDate.substring(0,10) }})</div>
                     <div class="line-style w-[100%] text-[#D3D3D3] flex"></div>
                 </template>
                 <template v-slot:message>
@@ -103,12 +115,41 @@ const router = useRouter()
 const route = useRoute()
 const mobileStore = useMobileStore()
 
+const calendar = ref(null)
 const choseDate = ref('')
+const scheduleData = ref({
+    id:'',
+    name:'',
+    state:0,
+    stateName:'未選擇',
+    scheduleDate:''
+})
+const scheduleOption = ref([
+    {
+        "label": "未選擇",
+        "value": 0
+    },
+    {
+        "label": "上課日",
+        "value": 1
+    },
+    {
+        "label": "放假日",
+        "value": 2
+    },
+    {
+        "label": "其他",
+        "value": 3
+    },
+])
+const editStatus = ref(false)
+const loadStatus = ref(false)
+const dateData = ref({})
+
 const isMobile = computed(() => {
   return mobileStore.isMobile
 })
 
-const calendar = ref(null)
 const selectDate = async(val,date) => {
     if (!calendar.value || loadStatus.value){
         return false
@@ -141,32 +182,7 @@ const selectDate = async(val,date) => {
     await getDateList()
     calendar.value.selectDate(val)
 }
-const scheduleData = ref({
-    id:'',
-    name:'',
-    state:0,
-    stateName:'未選擇',
-    scheduleDate:''
-})
-const scheduleOption = ref([
-    {
-        "label": "未選擇",
-        "value": 0
-    },
-    {
-        "label": "上課日",
-        "value": 1
-    },
-    {
-        "label": "放假日",
-        "value": 2
-    },
-    {
-        "label": "其他",
-        "value": 3
-    },
-])
-const editStatus = ref(false)
+
 const edit = async(event,item) => {
     
     if((item.type != 'current-month') || loadStatus.value){
@@ -195,8 +211,6 @@ const cancel = () => {
     editStatus.value = false
 }
 
-const loadStatus = ref(false)
-const dateData = ref({})
 const getDateList = async() => {
     if(loadStatus.value){
         return false
@@ -222,7 +236,6 @@ const getDateList = async() => {
 }
 
 const save = async() => {
-    console.log('save')
     if(loadStatus.value){
         return false
     }
@@ -246,7 +259,6 @@ const save = async() => {
 }
 
 const init = async() => {
-    console.log('init')
     choseDate.value = new Date().toISOString()
     getDateList()
 }
@@ -290,4 +302,9 @@ init()
 :deep(.el-calendar-table__row):nth-child(even){
     background-color:rgb(249 250 251);
 }
+
+:deep(.el-calendar__header){
+    width: 100%;
+}
+
 </style>
