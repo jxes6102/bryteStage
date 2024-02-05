@@ -19,3 +19,13 @@ export const getDetailByDate = (data) => {
         data
     })
 }
+
+export const scheduleEdit = (data) => {
+    const url = '/Schedule/Edit'
+    const method = 'post'
+    return request({
+        method,
+        url,
+        data
+    })
+}
