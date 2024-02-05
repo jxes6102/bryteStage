@@ -293,7 +293,7 @@
 import { ref,computed } from "vue"
 import { useRouter,useRoute } from "vue-router"
 import { useMobileStore } from '@/stores/index'
-import { getParentUser,getParentListByUser,getClassList,getStudentByClassIdList,createParent,editParent,deleteParent } from '@/api/api'
+import { getParentUser,getParentListByUser,getClassList,getStudentByClassIdList,createParent,editParent,deleteParent } from '@/api/parent'
 import dialogView from "@/components/dialogView.vue"
 import choseGroup from "@/components/choseGroup.vue"
 

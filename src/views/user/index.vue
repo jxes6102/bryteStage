@@ -262,7 +262,7 @@
 import { ref,computed } from "vue"
 import { useRouter,useRoute } from "vue-router"
 import { useMobileStore } from '@/stores/index'
-import { getRoleList,getUserList,setUserEdit } from '@/api/api'
+import { getRoleList,getUserList,setUserEdit } from '@/api/user'
 import dialogView from "@/components/dialogView.vue"
 import choseGroup from "@/components/choseGroup.vue"
 
