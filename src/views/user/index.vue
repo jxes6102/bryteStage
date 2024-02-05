@@ -354,15 +354,9 @@ const getRoleData = async() => {
     })
 }
 
-
-
 const changePage = (value) => {
     page.value = value
     getUserData()
-}
-
-const transformRole = (value) => {
-    return roleData.value.find((item)=> item.id==value)?.name
 }
 
 const saveEdit = async() => {
