@@ -4,6 +4,7 @@ import parentView from '../views/parent/index.vue'
 import loginView from '../views/login/index.vue'
 import userView from '../views/user/index.vue'
 import scheduleView from '../views/schedule/index.vue'
+import rollCallView from '../views/rollCall/index.vue'
 import errorView from '../views/errorView.vue'
 import { useLoginStore,useUserStore } from '@/stores/index'
 import { checkToken } from '@/api/api'
@@ -32,6 +33,11 @@ const router = createRouter({
       component: userView 
     },
     { 
+      path: '/rollCallView',
+      name: 'rollCallView',
+      component: rollCallView 
+    },
+    { 
       path: '/scheduleView',
       name: 'scheduleView',
       component: scheduleView 
@@ -55,7 +61,7 @@ const router = createRouter({
 const allow = ['loginView']
 
 router.beforeEach((to, from) => {
-  // console.log('to',to.name)
+  // console.log('to',to)
   const loginStore = useLoginStore()
   const userStore = useUserStore()
   if(!(allow.includes(to.name) || loginStore?.status)){

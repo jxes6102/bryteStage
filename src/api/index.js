@@ -50,7 +50,7 @@ instance.interceptors.response.use(
   },
   error => {
     // console.log('interceptors.response error',error)
-    if(error.response.status == 401){
+    if(error.response?.status == 401){
       // console.log('未允許拿取')
       const loginStore = useLoginStore()
       const userStore = useUserStore()

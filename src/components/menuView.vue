@@ -72,9 +72,9 @@ const urlData = ref([
         url:'/parentView'
     },
     {
-        name:'學生管理',
-        icon:'UserFilled',
-        url:'/parentView'
+        name:'點名管理',
+        icon:'Flag',
+        url:'/rollCallView'
     },
     {
         name:'日程管理',
@@ -142,6 +142,11 @@ const toLink = async(url) => {
         if(url=='/loginView'){
 
             await testLogout().then((res) => {
+                // console.log('res',res)
+                loginStore.clearToken()
+                userStore.clearUserInformation()
+                router.push({path:'/loginView'})
+            }).catch(() => {
                 // console.log('res',res)
                 loginStore.clearToken()
                 userStore.clearUserInformation()
