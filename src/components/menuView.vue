@@ -21,6 +21,28 @@
                 </div>
             </template>
         </template>
+
+        <!-- <template v-for="(item,index) in testMenuData" :key="index">
+            <div 
+                @click="testShow(index)"
+                :class="item?.url ? 'cursor-pointer' : ''"
+                class="w-full text-2xl font-medium mt-4 flex flex-wrap justify-center items-center">
+                <el-icon v-if="item?.icon">
+                    <component :is="item?.icon"></component>
+                </el-icon>
+                {{item.name}}
+            </div>
+            <template v-if="item.openStatus">
+                <div
+                    v-for="(thing,key) in item.children" :key="key"
+                    class="w-full text-2xl font-medium mt-1 flex flex-wrap justify-center items-center">
+                    <el-icon>
+                        <component :is="thing.icon"></component>
+                    </el-icon>
+                    {{thing.name}}
+                </div>
+            </template>
+        </template> -->
     </div>
 </template>
 
@@ -39,55 +61,6 @@ const loginStore = useLoginStore()
 const userStore = useUserStore()
 
 const urlData = ref([
-    // {
-    //     name:'系統管理',
-    //     children:[
-    //         {
-    //             name:'基本參數',
-    //             icon:'Document',
-    //             url:'/parameterView'
-    //         },
-    //         {
-    //             name:'權限管理',
-    //             icon:'Avatar',
-    //             url:'/permissionView'
-    //         },
-    //     ]
-    // },
-    // {
-    //     name:'訊息E點通',
-    //     children:[
-    //         {
-    //             name:'組織管理',
-    //             icon:'AddLocation',
-    //             url:'/organizeView'
-    //         },
-    //         {
-    //             name:'公告管理',
-    //             icon:'Service',
-    //             url:'/newsView'
-    //         },
-    //         {
-    //             name:'積分管理',
-    //             icon:'Coin',
-    //             url:'/pointView'
-    //         },
-    //         {
-    //             name:'推播通知',
-    //             icon:'Phone',
-    //             url:'/notificationView'
-    //         },
-    //         {
-    //             name:'使用者管理',
-    //             icon:'User',
-    //             url:'/userView'
-    //         },
-    //     ]
-    // },
-    // {
-    //     name:'接送畫面',
-    //     url:'/announcementView'
-    // },
     {
         name:'使用者管理',
         icon:'User',
@@ -99,6 +72,11 @@ const urlData = ref([
         url:'/parentView'
     },
     {
+        name:'學生管理',
+        icon:'UserFilled',
+        url:'/parentView'
+    },
+    {
         name:'日程管理',
         icon:'Calendar',
         url:'/scheduleView'
@@ -107,7 +85,57 @@ const urlData = ref([
         name:'豋出',
         url:'/loginView'
     },
-]) 
+])
+
+// const testMenuData = ref([
+//     {
+//         name:'test1',
+//         icon:'Calendar',
+//     },
+//     {
+//         name:'test2',
+//         icon:'Calendar',
+//         openStatus:false,
+//         children:[
+//             {
+//                 name:'kid1',
+//                 icon:'Calendar',
+//             },
+//             {
+//                 name:'kid2',
+//                 icon:'Calendar',
+//             },
+//         ]
+//     },
+//     {
+//         name:'test3',
+//         icon:'Calendar',
+//     },
+//     {
+//         name:'test4',
+//         icon:'Calendar',
+//         openStatus:false,
+//         children:[
+//             {
+//                 name:'kid3',
+//                 icon:'Calendar',
+//             },
+//             {
+//                 name:'kid4',
+//                 icon:'Calendar',
+//             },
+//         ]
+//     },
+//     {
+//         name:'test5',
+//         icon:'Calendar',
+//     },
+// ])
+
+// const testShow = (index) => {
+//     console.log('testShow',testMenuData.value[index])
+//     testMenuData.value[index].openStatus = !testMenuData.value[index].openStatus
+// }
 
 const toLink = async(url) => {
     if(url){
