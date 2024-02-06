@@ -19,7 +19,7 @@ instance.interceptors.request.use(
     // before request is sent
 
     config.headers['ngrok-skip-browser-warning'] = 69420
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('bryteStageToken');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}` 
     }

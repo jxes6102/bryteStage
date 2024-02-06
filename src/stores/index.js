@@ -65,11 +65,11 @@ export const useLoginStore = defineStore('login', () => {
     }
     const setToken = (value) => {
         status.value = true
-        localStorage.setItem("token", value)
+        localStorage.setItem("bryteStageToken", value)
     }
     const clearToken = () => {
         status.value = false
-        localStorage.removeItem("token")
+        localStorage.removeItem("bryteStageToken")
     }
     return { status,setToken,clearToken,isLogin }
 })

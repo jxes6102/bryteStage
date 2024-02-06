@@ -59,7 +59,7 @@ const setWidth = () => {
 }
 
 const init = () => {
-  if(!localStorage.getItem('token')){
+  if(!localStorage.getItem('bryteStageToken')){
     router.push({ path: '/loginView' })
   }else{
     loginStore.isLogin()
